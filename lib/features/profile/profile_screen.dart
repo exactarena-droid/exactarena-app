@@ -80,7 +80,7 @@ class ProfileScreen extends ConsumerWidget {
               ),
             _LinkTile(
               icon: LucideIcons.info,
-              label: 'About Terrace',
+              label: 'About Exact Arena',
               onTap: () => _showAbout(context),
             ),
             const SizedBox(height: 20),
