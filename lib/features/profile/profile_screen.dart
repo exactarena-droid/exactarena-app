@@ -147,7 +147,7 @@ class ProfileScreen extends ConsumerWidget {
   void _showAbout(BuildContext context) {
     showAboutDialog(
       context: context,
-      applicationName: 'Terrace',
+      applicationName: 'Exact Arena',
       applicationVersion: '1.0.0',
       applicationLegalese: 'Live scores, statistics, news and fan community.',
     );
