@@ -39,7 +39,7 @@ class TerraceApp extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp.router(
-      title: 'Terrace',
+      title: 'Exact Arena',
       debugShowCheckedModeBanner: false,
       theme: TerraceThemeBuilder.light(),
       darkTheme: TerraceThemeBuilder.dark(),
