@@ -7,7 +7,6 @@ import '../../core/providers.dart';
 import '../../core/result.dart';
 import '../../data/app_providers.dart';
 import '../../data/auth_controller.dart';
-import '../../main.dart'; // Внасяме localeProvider за управление на езика
 import '../../models/user.dart';
 import '../../theme/terrace_theme.dart';
 import '../../theme/terrace_tokens.dart';
@@ -19,6 +18,7 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider);
+    // Live chat is gated on a configured Supoora embed key (from /config).
     final hasLiveChat =
         ref.watch(appConfigProvider).valueOrNull?.hasLiveChat ?? false;
     return Scaffold(
@@ -43,11 +43,6 @@ class ProfileScreen extends ConsumerWidget {
           children: [
             if (user != null) _UserHeader(user: user) else const _SignedOutHeader(),
             const _ThemeToggleTile(),
-            
-            // ─── ВИЗУАЛЕН БУТОН ЗА СМЯНА НА ЕЗИКА ───
-            const _LanguageSelectTile(),
-            // ─────────────────────────────────────────
-
             if (user != null) ...[
               const _SectionLabel('Notifications'),
               const _NotificationPrefs(),
@@ -159,59 +154,6 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
-class _LanguageSelectTile extends ConsumerWidget {
-  const _LanguageSelectTile();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final currentLocale = ref.watch(localeProvider);
-    final languageName = currentLocale.languageCode == 'ar' ? 'العربية' : 'English';
-
-    return _LinkTile(
-      icon: LucideIcons.globe,
-      label: 'Language / اللغة',
-      trailing: Text(
-        languageName,
-        style: TextStyle(
-          color: context.terrace.textSecondary,
-          fontWeight: FontWeight.w600,
-          fontSize: 14,
-        ),
-      ),
-      onTap: () => _showLanguageDialog(context, ref, currentLocale.languageCode),
-    );
-  }
-
-  void _showLanguageDialog(BuildContext context, WidgetRef ref, String currentLanguage) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Select Language / اختر اللغة'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: const Text('English'),
-              trailing: currentLanguage == 'en' ? Icon(LucideIcons.check, color: context.terrace.brand) : null,
-              onTap: () {
-                ref.read(localeProvider.notifier).changeLanguage('en');
-                Navigator.pop(ctx);
-              },
-            ),
-            ListTile(
-              title: const Text('العربية'),
-              trailing: currentLanguage == 'ar' ? Icon(LucideIcons.check, color: context.terrace.brand) : null,
-              onTap: () {
-                ref.read(localeProvider.notifier).changeLanguage('ar');
-                Navigator.pop(ctx);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 class _UserHeader extends StatelessWidget {
   final User user;
   const _UserHeader({required this.user});
@@ -353,6 +295,7 @@ class _ThemeToggleTile extends ConsumerWidget {
   }
 }
 
+/// Local notification preference toggles (persisted in shared_preferences).
 class _NotificationPrefs extends ConsumerWidget {
   const _NotificationPrefs();
 
