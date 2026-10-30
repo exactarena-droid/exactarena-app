@@ -18,11 +18,8 @@ workflows:
       - name: CocoaPods installation
         script: |
           cd ios
-          rm -rf Pods Podfile.lock ReplayKitLauncher.xcworkspace
+          rm -rf Pods Podfile.lock Runner.xcworkspace/xcshareddata
           pod install
       - name: Flutter build iOS
         script: |
-          cd ios
-          xcodebuild -workspace Runner.xcworkspace -scheme Runner -resolvePackageDependencies
-          cd ..
-          flutter build ios --release --no-codesign
+          flutter build ios --release --no-codesign --no-pub --build-plugins_and_app
