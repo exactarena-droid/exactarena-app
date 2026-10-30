@@ -18,8 +18,8 @@ workflows:
       - name: CocoaPods installation
         script: |
           cd ios
-          rm -rf Pods Podfile.lock Runner.xcworkspace/xcshareddata
           pod install
       - name: Flutter build iOS
         script: |
-          flutter build ios --release --no-codesign --no-pub --build-plugins_and_app
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace -scheme Runner -configuration Release -disableAutomaticPackageResolution OBJROOT="${ResultDir}" SYMROOT="${ResultDir}" ONLY_ACTIVE_ARCH=NO
