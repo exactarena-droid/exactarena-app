@@ -1,0 +1,26 @@
+workflows:
+  flutter-ios-workflow:
+    name: Exact Arena iOS Build
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      watched_branches:
+        - main
+    scripts:
+      - name: Install dependencies
+        script: |
+          flutter pub get
+      - name: CocoaPods installation
+        script: |
+          cd ios && pod install
+    build:
+      ios:
+        bundle_identifier: com.lumina.terrace
+        scheme: Runner
+        mode: release
