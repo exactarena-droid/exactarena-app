@@ -11,7 +11,7 @@ workflows:
       events:
         - push
       watched_branches:
-        - main
+        - exactarena-droid
     scripts:
       - name: Install dependencies
         script: |
@@ -19,8 +19,6 @@ workflows:
       - name: CocoaPods installation
         script: |
           cd ios && pod install
-    build:
-      ios:
-        bundle_identifier: com.lumina.terrace
-        scheme: Runner
-        mode: release
+      - name: Flutter build iOS
+        script: |
+          flutter build ios --release --no-codesign --flavor Runner
