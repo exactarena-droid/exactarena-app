@@ -17,7 +17,8 @@ workflows:
           flutter pub get
       - name: CocoaPods installation
         script: |
-          cd ios && pod cache clean --all && pod install
+          cd ios && pod install
       - name: Flutter build iOS
         script: |
-          flutter build ios --release --no-codesign
+          defaults write com.apple.dt.Xcode IDEPackageSupportUseBuiltinSCM -bool NO
+          flutter build ios --release --no-codesign --no-pub
