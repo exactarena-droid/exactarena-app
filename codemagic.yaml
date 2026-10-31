@@ -15,10 +15,16 @@ workflows:
         script: |
           flutter clean
           flutter pub get
+      - name: Remove Corrupted Swift Packages Configuration
+        script: |
+          cd ios
+          rm -rf Runner.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
+          rm -rf Runner.xcodeproj/project.xcworkspace/xcuserdata
+          find . -name "Package.resolved" -delete
       - name: CocoaPods installation
         script: |
           cd ios
           pod install
       - name: Flutter build iOS
         script: |
-          flutter build ios --release --no-codesign --no-pub --pub
+          flutter build ios --release --no-codesign
